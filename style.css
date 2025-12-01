@@ -174,6 +174,90 @@ nav {
     flex-shrink: 0;
     margin-bottom: 0;
     position: relative;
+    /* No padding needed without frame */
+}
+
+.profile-photo {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    /* Crisp white border */
+    box-shadow:
+        0 10px 25px rgba(74, 59, 50, 0.15),
+        /* Deep shadow */
+        0 0 0 10px rgba(255, 255, 255, 0.5);
+    /* Outer glow/ring */
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.profile-photo:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        0 15px 35px rgba(74, 59, 50, 0.2),
+        0 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.hero .subtitle {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* Align vertically */
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: var(--text-color);
+    /* Dark Brown instead of Burgundy */
+    color: white;
+    border-radius: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+    border: 1px solid var(--text-color);
+}
+
+.btn:hover {
+    background-color: var(--accent-color);
+    /* Burgundy only on hover */
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+/* Mobile Hero */
+@media (max-width: 768px) {
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
 
     .profile-photo {
         width: 200px;
@@ -444,164 +528,27 @@ nav {
     position: absolute;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
+    animation: twinkle 2s infinite ease-in-out;
+    text-shadow: 0 0 10px rgba(128, 0, 32, 0.4);
+}
 
-    .highlights-section {
-        padding-left: 1rem;
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 
-    .highlights-list .highlight-item:last-child {
-        border-bottom: none;
+    50% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(0.85);
     }
+}
 
-    @media (max-width: 768px) {
-        .content-grid {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .current-focus {
-            padding-right: 0;
-            border-right: none;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 2rem;
-        }
-
-        .highlights-section {
-            padding-left: 0;
-        }
-    }
-
-    /* Projects Page */
-    .filter-bar {
-        margin: 2rem 0;
-        display: flex;
-        gap: 1rem;
-    }
-
-    .filter-btn {
-        background: none;
-        border: 1px solid var(--border-color);
-        padding: 0.5rem 1.2rem;
-        cursor: pointer;
-        font-family: var(--font-body);
-        transition: all 0.2s;
-    }
-
-    .filter-btn.active,
-    .filter-btn:hover {
-        background: var(--accent-color);
-        color: white;
-        border-color: var(--accent-color);
-    }
-
-    .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-    }
-
-    .project-card {
-        background: white;
-        border: 1px solid var(--border-color);
-        padding: 2rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .project-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(74, 59, 50, 0.08);
-    }
-
-    .project-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-    }
-
-    .status-badge {
-        font-size: 0.75rem;
-        padding: 0.2rem 0.6rem;
-        border-radius: 100px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .status-badge.ongoing {
-        background-color: #f4f6f8;
-        color: #546e7a;
-        border: 1px solid #cfd8dc;
-    }
-
-    .status-badge.past {
-        background-color: #efebe9;
-        color: #8d6e63;
-    }
-
-    .tags {
-        margin: 1rem 0;
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    .tag {
-        font-size: 0.8rem;
-        background: #f0f0f0;
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 1000;
-    }
-
-    .toast.show {
-        transform: translateX(-50%) translateY(0);
-    }
-
-    /* New Badge - Shining Star */
-    .new-badge {
-        display: inline-block;
-        position: absolute;
-        top: -10px;
-        right: -10px;
-        width: 24px;
-        height: 24px;
-        background: none;
-        border-radius: 0;
-        box-shadow: none;
-        animation: none;
-    }
-
-    .new-badge::before {
-        content: '✦';
-        /* Unicode Star */
-        font-size: 1.5rem;
-        color: var(--accent-color);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        animation: twinkle 2s infinite ease-in-out;
-        text-shadow: 0 0 10px rgba(128, 0, 32, 0.4);
-    }
-
-    @keyframes twinkle {
-
-        0%,
-        100% {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        50% {
-            opacity: 0.6;
-            transform: translate(-50%, -50%) scale(0.85);
-        }
-    }
-
-    /* Loading State Helpers */
-    .loading-text {
-        min-height: 1.5em;
-        transition: opacity 0.3s ease;
-    }
+/* Loading State Helpers */
+.loading-text {
+    min-height: 1.5em;
+    transition: opacity 0.3s ease;
+}
