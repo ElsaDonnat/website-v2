@@ -30,6 +30,20 @@ To let the "Robot" (GitHub Action) access Notion, add these secrets in **Setting
 -   Branch: `main` / `/ (root)`.
 -   Your site will be live at `https://yourusername.github.io/repo-name`.
 
+## 🎨 How to Safely Edit the Design
+Since pushing to GitHub updates the live site immediately, use this **"Safe Mode"** workflow:
+
+1.  **Edit Locally**: Change `style.css` or `index.html` on your computer.
+2.  **Preview Locally**: Double-click `index.html` to open it in your browser. You will see your changes instantly. **No one else can see this.**
+3.  **Refine**: Keep tweaking until you are 100% happy.
+4.  **Publish**: When you are ready, run the git commands to push:
+    ```bash
+    git add .
+    git commit -m "Updated design"
+    git push
+    ```
+    *Only then* will your changes go live.
+
 ---
 
 ## 🏗️ Architecture & Extensibility
