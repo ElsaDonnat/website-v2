@@ -1,59 +1,54 @@
 # Elsa Donnat - Portfolio Website
-This is a static portfolio website built with HTML, CSS, and Vanilla JavaScript.
+
+This is a **static portfolio website** that automatically updates from **Notion**.
+It is built with HTML, CSS, and Vanilla JavaScript, and uses **GitHub Actions** to fetch content.
 
 ## 🚀 How to Update Content
-All the content for the website is stored in a single file: `data.js`. You do **not** need to edit the HTML files to change text, add projects, or post updates.
+**You do not need to touch the code.**
+1.  Go to your **Notion Workspace**.
+2.  Add a new Project or Update in your databases.
+3.  **Wait**: The website updates automatically every 6 hours.
+4.  **Force Update**: Go to the "Actions" tab in GitHub, select "Sync Notion Content", and click "Run workflow".
 
-### 1. Open `data.js`
-Open the `data.js` file in any text editor (Notepad, VS Code, etc.).
+## 🛠️ Setup Guide
 
-### 2. Adding a New Project
-Find the `projects: [...]` section. Copy and paste the block below into the list:
+### 1. Notion Setup
+-   Create an Integration in [Notion Developers](https://www.notion.so/my-integrations).
+-   Share your "Projects" and "Updates" databases with this integration.
+-   Copy the **Internal Integration Token** (`secret_...`).
+-   Copy the **Database IDs** from the URL of your databases.
 
-```javascript
-{
-    title: "Project Title Here",
-    status: "ongoing", // or "past"
-    description: "Brief description of the project.",
-    tags: ["Tag 1", "Tag 2"],
-    link: "#", // Link to external site or PDF
-    documents: [ // Optional: Add PDFs or Docs
-        { title: "Project Proposal", type: "pdf", link: "assets/my-proposal.pdf" },
-        { title: "Draft", type: "doc", link: "https://docs.google.com/..." }
-    ]
-},
-```
+### 2. GitHub Secrets
+To let the "Robot" (GitHub Action) access Notion, add these secrets in **Settings > Secrets and variables > Actions**:
+-   `NOTION_KEY`: Your integration token.
+-   `NOTION_DB_PROJECTS`: ID of the Projects database.
+-   `NOTION_DB_UPDATES`: ID of the Updates database.
 
-### 3. Adding a New Update
-Find the `updates: [...]` section. Copy and paste the block below to the **top** of the list:
+### 3. GitHub Pages
+-   Go to **Settings > Pages**.
+-   Source: `Deploy from a branch`.
+-   Branch: `main` / `/ (root)`.
+-   Your site will be live at `https://yourusername.github.io/repo-name`.
 
-```javascript
-{
-    date: "2025-11-28", // YYYY-MM-DD format
-    title: "Title of the Update",
-    type: "news", // or "talk", "publication"
-    content: "The main text of your update goes here.",
-    image: "assets/photo.jpg" // Optional: Path to an image
-},
-```
+---
 
-### 4. Updating Bio & Links
-- **Bio**: Edit the `bio.short` (for homepage) or `bio.long` (for About page) fields.
-- **Links**: Update the URLs in the `links: { ... }` section.
+## 🏗️ Architecture & Extensibility
 
-## 📂 Managing Files (PDFs & Images)
-1.  Place your PDF files and images in the `assets/` folder.
-2.  Reference them in `data.js` using the path `assets/filename.ext`.
+### How it Works
+1.  **Source**: Content lives in Notion.
+2.  **Sync**: A script (`cms/sync.js`) fetches data from Notion and saves it to `data.js`.
+3.  **Build**: GitHub Actions runs this script automatically.
+4.  **Render**: The website (`index.html`, `script.js`) reads `data.js` to display content.
 
-### 💡 Using Google Drive for Images
-If you want to use an image directly from Google Drive instead of the `assets` folder:
-1.  Get the **Shareable Link** from Drive (e.g., `https://drive.google.com/file/d/FILE_ID/view...`).
-2.  You **cannot** use this link directly because it opens the Google Drive website.
-3.  You must convert it to a **Direct Link**.
-    *   **Format**: `https://drive.google.com/uc?export=view&id=FILE_ID`
-    *   **Tip**: Use a free tool like [Drive Link Converter](https://www.wonderplugin.com/online-tools/google-drive-direct-link-generator/) to get the correct link.
+### 🔧 How to Add a New Feature (e.g., "Reading List")
+If you want to add a new section (like a Book List) in the future:
 
-## ✨ Features
--   **"New" Badge**: Automatically appears on updates less than 3 days old.
--   **Auto-Year**: The footer year updates automatically.
--   **Responsive**: Works on mobile and desktop.
+1.  **Notion**: Create a new Database for "Books". Share it with your integration.
+2.  **Secrets**: Add `NOTION_DB_BOOKS` to GitHub Secrets (and `cms/.env` for local testing).
+3.  **Backend (`cms/sync.js`)**:
+    -   Add the new ID: `const DATABASE_ID_BOOKS = process.env.NOTION_DB_BOOKS;`
+    -   Write a function `getBooks()` similar to `getProjects()`.
+    -   Add the result to the `data` object in `main()`.
+4.  **Frontend (`script.js`)**:
+    -   Create a new function `renderReadingList()`.
+    -   Read from `data.books` and generate HTML.
