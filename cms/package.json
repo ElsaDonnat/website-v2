@@ -1,0 +1,13 @@
+{
+  "name": "website-cms",
+  "version": "1.0.0",
+  "description": "Sync script to fetch content from Notion and update data.js",
+  "main": "sync.js",
+  "scripts": {
+    "sync": "node sync.js"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.14",
+    "dotenv": "^16.4.5"
+  }
+}

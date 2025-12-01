@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elsa Donnat | AI Governance Researcher</title>
+    <meta name="description" content="Portfolio of Elsa Donnat, AI Governance Researcher with a legal background.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">Elsa Donnat</a>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="updates.html">Updates</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <!-- Dynamic Content -->
+                <div class="profile-container">
+                    <img id="hero-image" style="display: none;" alt="Profile Photo" class="profile-photo">
+                </div>
+
+                <div class="hero-content">
+                    <h1 id="hero-name" class="loading-text">&nbsp;</h1>
+                    <p class="subtitle" id="hero-role" class="loading-text">&nbsp;</p>
+
+                    <div class="hero-bio-text">
+                        <p id="hero-bio" class="loading-text">&nbsp;</p>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="about.html" class="btn">More About Me</a>
+                        <a href="#" id="link-cv" class="btn btn-outline" target="_blank">Download CV</a>
+                    </div>
+
+                    <div class="social-links" style="margin-top: 2rem; display: flex; gap: 1.5rem; font-size: 0.9rem;">
+                        <button onclick="copyEmail()" class="text-link">Copy Email</button>
+                        <a href="#" id="link-linkedin" target="_blank">LinkedIn</a>
+                        <a href="#" id="link-github" target="_blank">GitHub</a>
+                        <a href="#" id="link-substack" target="_blank">Substack</a>
+                        <a href="#" id="link-feedback" target="_blank">Give Feedback</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="featured">
+            <div class="container">
+                <div class="content-grid">
+                    <!-- Column 1: Selected Projects -->
+                    <div class="current-focus">
+                        <h2>Selected Projects</h2>
+                        <div id="current-project-card" class="project-list-mini">
+                            <!-- Dynamic Projects Injected Here -->
+                        </div>
+                        <a href="projects.html" class="btn btn-outline btn-small" style="margin-top: 1rem;">See More
+                            Projects</a>
+                    </div>
+
+                    <!-- Column 2: Highlights (Updates) -->
+                    <div class="highlights-section">
+                        <h2>Latest Updates</h2>
+                        <div id="highlights-list" class="highlights-list">
+                            <!-- Dynamic Updates Injected Here -->
+                        </div>
+                        <a href="updates.html" class="btn btn-outline btn-small" style="margin-top: 1rem;">See More
+                            Updates</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year">2025</span> Elsa Donnat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Logic -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

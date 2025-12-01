@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Elsa Donnat</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">Elsa Donnat</a>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="updates.html">Updates</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <div class="container">
+                <h1>About Me</h1>
+                <div style="display: flex; gap: 4rem; align-items: flex-start; margin-top: 2rem; flex-wrap: wrap;">
+                    <div style="flex: 2; min-width: 300px;">
+                        <!-- Dynamic Bio -->
+                        <div id="about-content">
+                            Loading biography...
+                        </div>
+
+                        <h2 style="font-size: 1.5rem; margin-top: 3rem;">Education</h2>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="margin-bottom: 1.5rem;">
+                                <strong>PhD in Law</strong><br>
+                                <span style="color: var(--text-light);">University of Cambridge, 2023</span>
+                            </li>
+                            <li style="margin-bottom: 1.5rem;">
+                                <strong>LL.M. in Technology Law</strong><br>
+                                <span style="color: var(--text-light);">Harvard Law School, 2018</span>
+                            </li>
+                            <li>
+                                <strong>LL.B. (Hons)</strong><br>
+                                <span style="color: var(--text-light);">London School of Economics, 2016</span>
+                            </li>
+                        </ul>
+
+                        <a href="#" id="link-cv-download" class="btn" target="_blank">Download CV (PDF)</a>
+                    </div>
+
+                    <div style="flex: 1; min-width: 250px;">
+                        <img id="about-image" src="" alt="Profile Photo" class="profile-photo-large">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year">2025</span> Elsa Donnat. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
