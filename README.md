@@ -44,6 +44,19 @@ Since pushing to GitHub updates the live site immediately, use this **"Safe Mode
     ```
     *Only then* will your changes go live.
 
+### 🧪 Advanced: Saving "Drafts" (Branches)
+If you want to save your work to GitHub **without** publishing it live (e.g., to work on it from another computer), use a **Branch**.
+
+1.  **Create a Draft**: `git checkout -b draft-design`
+2.  **Save to GitHub**: `git push -u origin draft-design`
+3.  **Result**: Your code is safe on GitHub, but the live site (on `main`) is untouched.
+4.  **Publish**: When ready, merge it back:
+    ```bash
+    git checkout main
+    git merge draft-design
+    git push
+    ```
+
 ---
 
 ## 🏗️ Architecture & Extensibility
