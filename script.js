@@ -194,23 +194,46 @@ function renderUpdatesPage() {
 
     data.updates.forEach(u => {
         const item = document.createElement('div');
-        item.className = 'update-item';
+        item.className = 'update-item'; // Default class
 
-        // Render Image if available
-        let imageHtml = '';
+        // Create Image Element first to check dimensions
+        let imageElement = null;
         if (u.image) {
-            imageHtml = `<img src="${u.image}" alt="${u.title}" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-top: 1rem; border: 1px solid var(--border-color);">`;
+            imageElement = document.createElement('img');
+            imageElement.src = u.image;
+            imageElement.alt = u.title;
+
+            // Smart Layout Logic
+            imageElement.onload = function () {
+                const aspect = this.naturalWidth / this.naturalHeight;
+                if (aspect < 1) { // Portrait -> Side
+                    item.classList.add('layout-right');
+                    item.appendChild(this); // Move image to end of flex container
+                } else { // Landscape -> Bottom
+                    item.classList.add('layout-bottom');
+                    // Image stays inside content div (handled below)
+                }
+            };
         }
 
-        item.innerHTML = `
-            <div class="update-date">${u.date}</div>
-            <div class="update-content">
-                <span class="update-type">${u.type}</span>
-                <h3>${u.title} ${isNew(u.date) ? '<span class="new-badge" title="New Update"></span>' : ''}</h3>
-                <p>${u.content}</p>
-                ${imageHtml}
-            </div>
+        // Content Container
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'update-content';
+        contentDiv.innerHTML = `
+            <span class="update-type">${u.type}</span>
+            <h3>${u.title} ${isNew(u.date) ? '<span class="new-badge" title="New Update"></span>' : ''}</h3>
+            <p>${u.content}</p>
         `;
+
+        // If image exists, append it to content div initially (for bottom layout)
+        // If it turns out to be portrait, the onload handler will move it.
+        if (imageElement) {
+            contentDiv.appendChild(imageElement);
+        }
+
+        item.innerHTML = `<div class="update-date">${u.date}</div>`;
+        item.appendChild(contentDiv);
+
         container.appendChild(item);
     });
 }
