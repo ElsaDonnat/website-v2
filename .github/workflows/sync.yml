@@ -1,0 +1,40 @@
+name: Sync Notion Content
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # Runs every 6 hours
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        working-directory: ./cms
+        run: npm ci
+
+      - name: Run Sync Script
+        working-directory: ./cms
+        env:
+          NOTION_KEY: ${{ secrets.NOTION_KEY }}
+          NOTION_DB_PROJECTS: ${{ secrets.NOTION_DB_PROJECTS }}
+          NOTION_DB_UPDATES: ${{ secrets.NOTION_DB_UPDATES }}
+        run: node sync.js
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add data.js
+          # Only commit if there are changes
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-sync from Notion" && git push)
