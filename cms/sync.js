@@ -8,18 +8,10 @@ const notion = new Client({ auth: process.env.NOTION_KEY });
 
 const DATABASE_ID_PROJECTS = process.env.NOTION_DB_PROJECTS;
 const DATABASE_ID_UPDATES = process.env.NOTION_DB_UPDATES;
-// For Bio, we'll just use the existing static bio for now to keep it simple, 
-// or we could add a Page ID later. Let's focus on the dynamic lists first.
-
 async function getProjects() {
     const response = await notion.databases.query({
         database_id: DATABASE_ID_PROJECTS,
-        filter: {
-            property: 'Status',
-            select: {
-                is_not_empty: true
-            }
-        },
+        // Removed filter to fetch all projects
     });
 
     return response.results.map(page => {
