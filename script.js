@@ -7,15 +7,21 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCommonElements();
 
     // Page-specific rendering
+    // Page-specific rendering
     const path = window.location.pathname;
-    if (path.includes('index.html') || path === '/' || path.endsWith('/website/')) {
-        renderHomePage();
-    } else if (path.includes('about.html')) {
+
+    if (path.includes('about.html')) {
         renderAboutPage();
     } else if (path.includes('projects.html')) {
         renderProjectsPage();
     } else if (path.includes('updates.html')) {
         renderUpdatesPage();
+    } else if (path.includes('contact.html')) {
+        // Contact page logic is handled below, but we can leave this empty or consolidate.
+        // The existing code has a separate check for contact-email element.
+    } else {
+        // Default to Home Page (handles /, /index.html, /website-v2/, etc.)
+        renderHomePage();
     }
 
     if (document.getElementById('contact-email')) {
