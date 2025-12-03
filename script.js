@@ -4,29 +4,33 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderCommonElements();
+    try {
+        renderCommonElements();
 
-    // Page-specific rendering
-    // Page-specific rendering
-    const path = window.location.pathname;
+        // Page-specific rendering
+        const path = window.location.pathname;
 
-    if (path.includes('about.html')) {
-        renderAboutPage();
-    } else if (path.includes('projects.html')) {
-        renderProjectsPage();
-    } else if (path.includes('updates.html')) {
-        renderUpdatesPage();
-    } else if (path.includes('contact.html')) {
-        // Contact page logic is handled below, but we can leave this empty or consolidate.
-        // The existing code has a separate check for contact-email element.
-    } else {
-        // Default to Home Page (handles /, /index.html, /website-v2/, etc.)
-        renderHomePage();
-    }
+        if (path.includes('about.html')) {
+            renderAboutPage();
+        } else if (path.includes('projects.html')) {
+            renderProjectsPage();
+        } else if (path.includes('updates.html')) {
+            renderUpdatesPage();
+        } else if (path.includes('contact.html')) {
+            // Contact page logic is handled below, but we can leave this empty or consolidate.
+            // The existing code has a separate check for contact-email element.
+        } else {
+            // Default to Home Page (handles /, /index.html, /website-v2/, etc.)
+            renderHomePage();
+        }
 
-    if (document.getElementById('contact-email')) {
-        console.log("Contact page detected, rendering...");
-        renderContactPage();
+        if (document.getElementById('contact-email')) {
+            console.log("Contact page detected, rendering...");
+            renderContactPage();
+        }
+    } catch (error) {
+        console.error("Script Error:", error);
+        alert("Website Error: " + error.message);
     }
 });
 

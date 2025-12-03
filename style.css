@@ -194,12 +194,7 @@ nav {
     transition: transform 0.3s ease;
 }
 
-.profile-photo:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        0 15px 35px rgba(74, 59, 50, 0.2),
-        0 0 0 10px rgba(255, 255, 255, 0.6);
-}
+
 
 .hero-content {
     flex: 1;
@@ -242,6 +237,7 @@ nav {
 
 .btn:hover {
     background-color: var(--accent-color);
+    color: white;
     /* Burgundy only on hover */
     border-color: var(--accent-color);
     transform: translateY(-1px);
@@ -552,3 +548,21 @@ nav {
     min-height: 1.5em;
     transition: opacity 0.3s ease;
 }
+
+/* Large Profile Photo for About Page */
+.profile-photo-large {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(74, 59, 50, 0.15);
+    object-fit: cover;
+    display: block;
+}
+
+/* Smooth Underline Animation for Social Links */
+.social-links a, .text-link { position: relative; text-decoration: none; display: inline-block; }
+.social-links a::after, .text-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -2px; left: 0; background-color: var(--link-hover); transition: width 0.3s ease; }
+.social-links a:hover::after, .text-link:hover::after { width: 100%; }
+
+#link-cv-download { margin-top: 2rem; }
