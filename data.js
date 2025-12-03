@@ -1,6 +1,6 @@
 /*
  * WEBSITE CONTENT CONFIGURATION
- * Synced from Notion: 2025-12-01T18:17:38.738Z
+ * Synced from Notion: 2025-12-03T10:09:06.160Z
  */
 
 const data = {
@@ -42,6 +42,16 @@ const data = {
         "documents": []
     },
     {
+        "title": "SPAR - AI agents manipulation",
+        "status": "past",
+        "description": "I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.I created this website in around 30 minutes using Gemini 3.0 in Antigravity.",
+        "tags": [
+            "Law"
+        ],
+        "link": "#",
+        "documents": []
+    },
+    {
         "title": "wefwe",
         "status": "past",
         "description": "awefwfwaefwefewfwfew",
@@ -53,7 +63,7 @@ const data = {
             {
                 "title": "Forecasting Hackathon.pdf",
                 "type": "pdf",
-                "link": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b5ee58a0-75d0-4b1c-8aff-a786ae3a6ca9/f6ec9078-9699-4896-add8-56772ea7b848/Forecasting_Hackathon.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466R7S4AWCY%2F20251201%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20251201T181738Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDoaCXVzLXdlc3QtMiJIMEYCIQCBpV2pSWxSCb9pucviAxwda8hp8QtaenuoGq6QfS8BqAIhANO7%2BGp5GMxfbl7uRfpen1oox1Jc6%2BGC1ldXLAxu49z3Kv8DCAMQABoMNjM3NDIzMTgzODA1IgzCZU60qw8EFDOhR%2FYq3AMgeoygkZkZWRBLBcG9ulF%2BfhXWhX2hP4JUfi1WZfjoF9ei3I%2FNqafFx%2BwQ6oWRIDmvvQC%2FCsa24z2lafeWx%2BJ4DuKsMcYs7kxkIxz%2B8CQbP81Y6qUeFcAB5uCQqcfdJbzEmKyDzf1tMdkMxmVGbnUL7B8dhF7OGFLHmpfZx2Hq7t4TJT0BnhGYgHzldRzolIIHPAEbOhRVNoxtVPKaOm2vsVSNPhV9xrakiG95PNqk8q9R8d1vlbmmkwkvhVgPVxIbfNbZlVLp053vOfCqboT02gfYjcp8pseTvn%2BYjSOrW97I0j0Z%2F7JAD7J7z9%2F2HWb9SAHZV8t79C7n4eLeFN8zf6b0nzXlOFeWukmoAFXxuqTIXkET6aIESFSHK3slVk%2BYggvcHkkckujCaHDwtVM3kzfn11LlkXEZPED42r2%2FzMN0g0aDuipWy%2FoL9yGE1LNxkejGfqM%2F0dQ846ZN3yyobavwwzur3xpoHAeR6T43IrQBpB7QqCW0a%2ByczMCsLNVPQb%2Fai2%2B6bY40MNxraaCriE9DLiJ39r2oPdILlnGnHol4ViHxF2CRULtCjdr0TnUyi66iLmbRr7IZgjP6xSYOOKxuxxIB7Gv%2BF0c%2F5dHa3Zc2xASdB2VKWj8zozCRobfJBjqkAa6FqRCvLGkNMPeghfDY5H2Vt0KHNIqh6wrkSwLbivRMA0nL7dGATjrGduxmjDAE9OB28edv4omT%2BL%2BH3%2F9YI1Rul9cc35Q6vLQd%2F2D2iGts49pem49lpxJNeokd8L%2BSF%2FpTfNuaQkFytiXc5Dnbp8cHS485T4ugmZjGVKUNaYUyMmuAU%2BCgqhKwtY1We7nM9KQCCMXPNkDCju5BCStyVrmlyVV%2B&X-Amz-Signature=8f72df57ebcd69bdf861bc4fafe56088578480c59fd5ef5ab7f9e6d377a747dd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+                "link": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b5ee58a0-75d0-4b1c-8aff-a786ae3a6ca9/f6ec9078-9699-4896-add8-56772ea7b848/Forecasting_Hackathon.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4667Y7H3ANV%2F20251203%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20251203T100906Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGIaCXVzLXdlc3QtMiJHMEUCIQDzmejXpwaP76QAdxTIsfqqBrjQcOkcqDbTFJNNNLQKhgIgdSehFjsQOsZ95I3NrEmsjwv8so3mEhEhcDpar5xk5noq%2FwMIKxAAGgw2Mzc0MjMxODM4MDUiDMejPBa28X%2Bei5OxiyrcA%2Fjgfj7FRbb0kojWpSq7djgLFw99wtlpnRgmfubgQf7quoO4UjlTRxmg0zAaK0WktX%2FmyDCkKddnPkQ%2FSwseouhAVAj2zXo72VRySaUkh2sgSXYltQGd5Zn2P9%2BP%2BqNkYxokxqA3X%2BJaTkivGFhnEIxCHTdhV%2FyqndDWIDssITFx4QvBC%2BMy7dRAQrtTCkzJWa9StGTxeWTaNWbfiXt7FwoGt0y%2BgesN65D8peqqmAaWs3yL0tcvxboCTF8RgbXUF6ME%2BghPqDBmIbznpCOp4%2BtkEahXA%2F8AUUBA%2B2LPmM%2FdLqQw0gWmUVJ2hEvc2XhCj0A3khQgEO4oJ7oqb%2BDwmrjLxrWEKWHFb%2FSm3oR3tA1wcGgxJiPi9qfrbidE8DvAI80JGuAqJ4qoT8N1tc38jcVpDJ2aE2eNhvuJfJ%2FKdREWhsksAEW4WUmRshOcqQM7EsEXDErvoq6L9tg10HHl1HQPXYoMhPfI3t8HIZEE3AUiESPQFzyxrbGcG6OnJhqUcj%2FqlK%2FFVOTs7UTPSk04J%2FTFxJ63bCZK%2F0qNaAxn%2FokiPyoa7f8G0KT2y6fmh0%2FDcEEIqH7Frp3P%2FgkyHATikcRJCiQiHsnD0mcuXg8FeHC5cDaPPuXuxkbOK6EYMNGSwMkGOqUBtyk%2BlG0JfB1j1vE7SFi%2FMX10Hz6M9%2B3RAOMYIFEtMhTfdW8DqHWNS8YkKhqHjYfqBTe6sv%2BGyhlU9KmbEjs8ZcVjT8ITZ4tAs4r2ZV4ItDXcI5ymgEQ7TjnzTkgBReLIXfUG1%2FkfOvJOCTuyS%2B8Z5WFkWxLpqTRs%2BK3aQBDXBbMg5HiwEUgFkkf9rCrAYi00o5kuBUYT0xSK8SKYOqS%2FEsYe6EdG&X-Amz-Signature=e07a9451200993f5a7598bb10cdfb21d8ffd34d97abf2e3063613c5dc341d4ca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
             }
         ]
     }
@@ -66,14 +76,14 @@ const data = {
         "title": "test 29.11 new update",
         "type": "news",
         "content": "i am wondering if this gets teched auromatixally",
-        "image": null
+        "image": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b5ee58a0-75d0-4b1c-8aff-a786ae3a6ca9/e651f821-d43f-47fa-ab28-027214adb63d/Screenshot_2025-11-27_042510.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466Q4SYUZM3%2F20251203%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20251203T100907Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGIaCXVzLXdlc3QtMiJHMEUCIQCN6jNtkiG%2FOODQoo%2BABcghWyOs%2FmpjEtOPktRjD6TwrgIgdKQLbofkBLuhGrth%2BH9C6EllstIpi82wu90TNbhAYygq%2FwMIKxAAGgw2Mzc0MjMxODM4MDUiDGbFZlFQl9ilutTWmyrcA1LsX7iRpL1MWpGkv3UAq5eiAvVuNTKOrhnwc1MViD5BC%2F5QkLH5HLMa1Objg8gwT61cgspRz8sBhEFU9LcWc5C1bPf6T39LcMeWk5mCnyMzYgrgCkEZ4MjdZfgVU6PtCW3AccGjghhx%2F4aBfP9r9ekxSdIgBAzAyXuxnwiiN54fXg22P72NYpa1KjP6x5MH8ZjqfL4FyNUw1EIJK1uzI%2FZwgQa2Qt9%2BoeSN8dCCwdZqP1XbOjjTfv%2B4PghIas%2BopCEADAwP1o77OJ8da0RHjzuUjorhixr5srEnKzDuK%2FT61vbvKnRQBbMRekUp1N4Nm0l20KJCfW9TJ6c%2FORKDEinGsRJpvF1uRTuAPuvB11cckOw5sD7opEnMqg%2F8hWuR6SfdUlGtErEf1GyU3FpCrZRFf1VOc4kwAD05Qu1mMqvDVBDkgH8isFkgeLwWDTbEns1o0Sn9R5nL0qEotXlwC%2FTye90P%2FJy2hpimzHyY%2BhZsWMTdkNZRZd1%2Bj6qfVBaoeV2aIyrZV43EPoxuiyv0mYrhXlbQR6GAYyZiyR3rXh2JDGxBiwJ6unsXzFczBIUKiai88bXJnCkeXhv3riVxYO2%2FcmTmR8Wcz0VGXYMcjpOYVdi92FWyfMClSf%2FpMKiUwMkGOqUBgCVOx8IMIWqgHvEn%2FJwBttZ44emjPb5CUYDB70oMuJ8Q7GsCCCrmGu2h2GcZ6W3eFDT97NplmrsIFSjkZVLlC%2FuPiq1kasJ6APGpKl8q7R2RhWuGC0RgWlC7Q8Z2LiEqWGhY%2FOBSRv%2BLRoq3KJpHLdsIqmf4MtsaNS6FMq4NMBhFmLgPPW8qqrS13ZjjKe71qAxxUf1oLGic4somsdq17tbf2QQf&X-Amz-Signature=e340b44cb8a7c8a413f3e7c513dd21cebd760b06ca8b261ac31225f7a5112049&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
     },
     {
         "date": "2025-11-26",
         "title": "I have joined the Law & Policy team at the Ada Lovelace Institute!",
         "type": "talk",
         "content": "ewewewewew",
-        "image": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b5ee58a0-75d0-4b1c-8aff-a786ae3a6ca9/7facd2f6-96ba-404c-926b-adab57ac9b37/Screenshot_2025-11-04_100435.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466WSNEHI4P%2F20251201%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20251201T181738Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEDoaCXVzLXdlc3QtMiJHMEUCIQCIL3sqRgEFY4DjeTBKiHJLz13mc%2BFOcMyqUdaMJbn8tAIgMnlGL7SJPxXUYCcE51GdB9GzME387ThM3bnriCtJBCEq%2FwMIAxAAGgw2Mzc0MjMxODM4MDUiDHSRoyH4%2BaEgLPLVyyrcAy0kmXv03cqoj%2Bt5ImDPCwT8Jx35gJio51kcApqtaO5Rfg2O%2FI1cUzUpC1SACkRyY%2BxtG9y9ea2ybWxiO1aAjEvrGMf34OoTfA%2BRdLjnj%2F%2FKoUELmbkvsC%2FqidLGFi2mbaJ74UA%2BBXFD4WjsLm6yHPd2VszYgYMQ%2F%2FJPY%2BGnneTNUaCwDjK3Thojg2vyX78NJMlA1vQCuO7EDmCuk%2B4eH6zGU9LZvVKYP8UtfSOVM5MpWpqk4p%2F8cf5pF5psixAwRFDRD2f12z%2BfepSyaRm9pZlRv1vN36SnJ%2B%2BE201JbxK2UJgXOeR1u6kXJxKjXSEqLffOZWXT4uBR2Z%2FA9ZeeK0UJ1%2BoD1gvN9iQcLJkMV90ME9s3h1EuwVm9RyV8%2FeG8qTld7os1hKqZUPI3YPYgzJcicCI36iT%2Bzhgb4qvmb9qmc1jlRjaRwIcMPtd1hQzvWCTS%2FF4SM4LUENK3i8vaDJkDTeOYwSW%2Fsz2LlVgCg0Cbgoka1vjyMdDRcONTvOypBZSXn9rGqMPAYGiHM1Tcl9S7NPMUvi5TGqoaSogo2KTyN4UeVGvXbcIFCaPl4aIaFt%2BNH4eR17J5HUyHSV9Sk%2BCm6vmsfxhiKLb%2FjeutosZ4aYrK3E1YcA27Id8MMNKgt8kGOqUB%2Fv1Y4YqqHVBynslz3M4JqcxIvO1%2Fl9ZgRDEp%2FOkJ0X4tX9pfjinIz%2BUSaDpFjE5quMY7g4DlPoEjBvuUkaC7Ch0jOlsTBEwIJPjmlTwqpCljgCELcQH9r0KM2VWKYKpu4LuZuPTaPJgY8pyXC0CBxzRPfknk%2FNAXy5W3AYe0WASRaX%2F3dJPz9AoUBshs19kYr4DOnqX0GP8uHfDtv2XGYxNOJXaV&X-Amz-Signature=dc538d3f7a337ed06d4be291cf158a956f9eaa7181b626c54a8d5ed6613193c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+        "image": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b5ee58a0-75d0-4b1c-8aff-a786ae3a6ca9/7facd2f6-96ba-404c-926b-adab57ac9b37/Screenshot_2025-11-04_100435.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466Q4SYUZM3%2F20251203%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20251203T100907Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEGIaCXVzLXdlc3QtMiJHMEUCIQCN6jNtkiG%2FOODQoo%2BABcghWyOs%2FmpjEtOPktRjD6TwrgIgdKQLbofkBLuhGrth%2BH9C6EllstIpi82wu90TNbhAYygq%2FwMIKxAAGgw2Mzc0MjMxODM4MDUiDGbFZlFQl9ilutTWmyrcA1LsX7iRpL1MWpGkv3UAq5eiAvVuNTKOrhnwc1MViD5BC%2F5QkLH5HLMa1Objg8gwT61cgspRz8sBhEFU9LcWc5C1bPf6T39LcMeWk5mCnyMzYgrgCkEZ4MjdZfgVU6PtCW3AccGjghhx%2F4aBfP9r9ekxSdIgBAzAyXuxnwiiN54fXg22P72NYpa1KjP6x5MH8ZjqfL4FyNUw1EIJK1uzI%2FZwgQa2Qt9%2BoeSN8dCCwdZqP1XbOjjTfv%2B4PghIas%2BopCEADAwP1o77OJ8da0RHjzuUjorhixr5srEnKzDuK%2FT61vbvKnRQBbMRekUp1N4Nm0l20KJCfW9TJ6c%2FORKDEinGsRJpvF1uRTuAPuvB11cckOw5sD7opEnMqg%2F8hWuR6SfdUlGtErEf1GyU3FpCrZRFf1VOc4kwAD05Qu1mMqvDVBDkgH8isFkgeLwWDTbEns1o0Sn9R5nL0qEotXlwC%2FTye90P%2FJy2hpimzHyY%2BhZsWMTdkNZRZd1%2Bj6qfVBaoeV2aIyrZV43EPoxuiyv0mYrhXlbQR6GAYyZiyR3rXh2JDGxBiwJ6unsXzFczBIUKiai88bXJnCkeXhv3riVxYO2%2FcmTmR8Wcz0VGXYMcjpOYVdi92FWyfMClSf%2FpMKiUwMkGOqUBgCVOx8IMIWqgHvEn%2FJwBttZ44emjPb5CUYDB70oMuJ8Q7GsCCCrmGu2h2GcZ6W3eFDT97NplmrsIFSjkZVLlC%2FuPiq1kasJ6APGpKl8q7R2RhWuGC0RgWlC7Q8Z2LiEqWGhY%2FOBSRv%2BLRoq3KJpHLdsIqmf4MtsaNS6FMq4NMBhFmLgPPW8qqrS13ZjjKe71qAxxUf1oLGic4somsdq17tbf2QQf&X-Amz-Signature=8faadbc9c5f54b4ec6f23e36961d5fc98c847e2931f31e7ef9afa8b4b7a36a84&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
     },
     {
         "date": "2025-11-20",

@@ -1,7 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const { Client } = require('@notionhq/client');
 const fs = require('fs');
-const path = require('path');
 
 // Initialize Notion Client
 const notion = new Client({ auth: process.env.NOTION_KEY });
@@ -86,10 +86,15 @@ async function main() {
 
     try {
         const projects = await getProjects();
-        console.log(`✅ Found ${projects.length} projects.`);
+        let debugLog = `✅ Found ${projects.length} projects:\n`;
+        projects.forEach(p => debugLog += `   - ${p.title} (${p.status})\n`);
 
         const updates = await getUpdates();
-        console.log(`✅ Found ${updates.length} updates.`);
+        debugLog += `✅ Found ${updates.length} updates:\n`;
+        updates.forEach(u => debugLog += `   - ${u.title} (${u.date})\n`);
+
+        fs.writeFileSync(path.join(__dirname, 'debug_log.txt'), debugLog);
+        console.log("Debug log written to cms/debug_log.txt");
 
         // Read the existing data.js to preserve static info (Bio, Links)
         // Actually, parsing JS file is hard. 
@@ -153,6 +158,7 @@ const data = {
 
     } catch (error) {
         console.error("❌ Error syncing from Notion:", error);
+        fs.writeFileSync(path.join(__dirname, 'error_log.txt'), JSON.stringify(error, null, 2));
     }
 }
 
