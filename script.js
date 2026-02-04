@@ -17,16 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (path.includes('updates.html')) {
             renderUpdatesPage();
         } else if (path.includes('contact.html')) {
-            // Contact page logic is handled below, but we can leave this empty or consolidate.
-            // The existing code has a separate check for contact-email element.
+            renderContactPage();
         } else {
             // Default to Home Page (handles /, /index.html, /website-v2/, etc.)
             renderHomePage();
-        }
-
-        if (document.getElementById('contact-email')) {
-            console.log("Contact page detected, rendering...");
-            renderContactPage();
         }
     } catch (error) {
         console.error("Script Error:", error);
@@ -220,8 +214,6 @@ function renderUpdatesPage() {
 }
 
 function renderContactPage() {
-    console.log("Executing renderContactPage");
-    console.log("Data object:", data);
     // Email
     const emailLink = document.getElementById('contact-email');
     if (emailLink) {
