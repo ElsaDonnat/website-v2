@@ -28,26 +28,80 @@ const getFiles = (prop) => {
     })).filter(f => f.url);
 };
 
-// Helper to get first image from files property
-const getImage = (prop) => {
-    const files = getFiles(prop);
-    return files.length > 0 ? files[0].url : null;
+// --- IMAGE DOWNLOAD HELPERS ---
+
+// Check if URL is a temporary Notion-hosted URL
+const isNotionUrl = (url) => {
+    return url && (url.includes('prod-files-secure.s3') || url.includes('secure.notion-static'));
 };
 
-// Helper to get ALL images from files property (for gallery)
-const getImages = (prop) => {
-    const files = getFiles(prop);
-    return files.map(f => f.url);
+// Extract file extension from URL
+const getImageExtension = (url) => {
+    const match = url.match(/\.(jpg|jpeg|png|gif|webp|svg)/i);
+    return match ? match[0].toLowerCase() : '.jpg';
 };
 
-// Helper for Documents (PDFs)
-const getDocs = (prop) => {
+// Download an image and save it locally
+const downloadImage = async (url, id, prefix = 'img') => {
+    if (!url || !isNotionUrl(url)) {
+        return url; // Return as-is if external URL or null
+    }
+
+    try {
+        const extension = getImageExtension(url);
+        const filename = `${prefix}_${id}${extension}`;
+        const outputPath = path.join(__dirname, '..', 'assets', 'images', filename);
+
+        // Download the image
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.log(`   ⚠️ Failed to download image: ${response.status}`);
+            return url; // Return original URL on failure
+        }
+
+        const buffer = Buffer.from(await response.arrayBuffer());
+        fs.writeFileSync(outputPath, buffer);
+        console.log(`   📥 Downloaded: ${filename}`);
+
+        return `assets/images/${filename}`;
+    } catch (error) {
+        console.log(`   ⚠️ Image download error: ${error.message}`);
+        return url; // Return original URL on error
+    }
+};
+
+// Helper to get first image from files property (downloads if Notion URL)
+const getImageAsync = async (prop, id, prefix = 'cover') => {
     const files = getFiles(prop);
-    return files.map(f => ({
-        title: f.name,
-        type: f.name.endsWith('.pdf') ? 'pdf' : 'doc',
-        link: f.url
-    }));
+    if (files.length === 0) return null;
+    return await downloadImage(files[0].url, id, prefix);
+};
+
+// Helper to get ALL images from files property (downloads if Notion URLs)
+const getImagesAsync = async (prop, id, prefix = 'gallery') => {
+    const files = getFiles(prop);
+    const downloadedUrls = [];
+    for (let i = 0; i < files.length; i++) {
+        const localPath = await downloadImage(files[i].url, `${id}_${i}`, prefix);
+        downloadedUrls.push(localPath);
+    }
+    return downloadedUrls;
+};
+
+// Helper for Documents (PDFs) - downloads locally
+const getDocsAsync = async (prop, id) => {
+    const files = getFiles(prop);
+    const docs = [];
+    for (let i = 0; i < files.length; i++) {
+        const f = files[i];
+        const localPath = await downloadImage(f.url, `${id}_doc_${i}`, 'doc');
+        docs.push({
+            title: f.name,
+            type: f.name.endsWith('.pdf') ? 'pdf' : 'doc',
+            link: localPath
+        });
+    }
+    return docs;
 };
 
 // Convert Notion rich_text to HTML
@@ -187,6 +241,9 @@ async function getProjects() {
         // Fetch page content for full description
         const fullContent = await getPageContent(page.id);
 
+        // Download documents locally
+        const documents = await getDocsAsync(props.Documents, page.id);
+
         projects.push({
             id: page.id,
             title: getTitle(props.Name),
@@ -196,7 +253,7 @@ async function getProjects() {
             fullContent: fullContent, // Rich HTML from page body
             tags: getMultiSelect(props.Tags),
             link: getUrl(props.Link),
-            documents: getDocs(props.Documents)
+            documents: documents
         });
     }
 
@@ -222,10 +279,10 @@ async function getUpdates() {
         // Fetch page content for full content
         const fullContent = await getPageContent(page.id);
 
-        // Get image properties
-        const cover = getImage(props.Cover);       // Single cover image
-        const banner = getImage(props.Banner);     // Single banner image
-        const gallery = getImages(props.Gallery);  // Array of gallery images
+        // Download images locally (async)
+        const cover = await getImageAsync(props.Cover, page.id, 'cover');
+        const banner = await getImageAsync(props.Banner, page.id, 'banner');
+        const gallery = await getImagesAsync(props.Gallery, page.id, 'gallery');
 
         // Fallback for list page thumbnail: Cover → first Gallery → Banner → null
         const listImage = cover || (gallery.length > 0 ? gallery[0] : null) || banner || null;
@@ -238,7 +295,7 @@ async function getUpdates() {
             summary: getText(props.Summary) || getText(props.Content),
             content: getText(props.Content),
             fullContent: fullContent,
-            // Image properties
+            // Image properties (now local paths)
             listImage: listImage,   // The image to show on list page (right side)
             cover: cover,           // For wrap style on detail page
             banner: banner,         // Full-width at top of detail page
