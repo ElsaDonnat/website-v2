@@ -1,6 +1,6 @@
 /*
  * WEBSITE CONTENT CONFIGURATION
- * Synced from Notion: 2026-02-09T16:29:16.692Z
+ * Synced from Notion: 2026-02-09T18:08:03.619Z
  */
 
 const data = {
