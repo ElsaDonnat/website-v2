@@ -1,8 +1,10 @@
 name: Sync Notion Content
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # Runs once every 24 hours (at midnight)
+  # DISABLED: Auto-sync can't download images, causing broken image paths
+  # Uncomment if you want text-only auto-sync (no images)
+  # schedule:
+  #   - cron: '0 0 * * *' # Runs once every 24 hours (at midnight)
   workflow_dispatch: # Allows manual trigger
 
 jobs:
