@@ -2,7 +2,7 @@ name: Sync Notion Content
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # Runs every 6 hours
+    - cron: '0 0 * * *' # Runs once every 24 hours (at midnight)
   workflow_dispatch: # Allows manual trigger
 
 jobs:
@@ -29,6 +29,8 @@ jobs:
           NOTION_KEY: ${{ secrets.NOTION_KEY }}
           NOTION_DB_PROJECTS: ${{ secrets.NOTION_DB_PROJECTS }}
           NOTION_DB_UPDATES: ${{ secrets.NOTION_DB_UPDATES }}
+          NOTION_DB_SETTINGS: ${{ secrets.NOTION_DB_SETTINGS }}
+          NOTION_PAGE_ABOUT: ${{ secrets.NOTION_PAGE_ABOUT }}
         run: node sync.js
 
       - name: Commit and Push Changes

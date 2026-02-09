@@ -561,8 +561,461 @@ nav {
 }
 
 /* Smooth Underline Animation for Social Links */
-.social-links a, .text-link { position: relative; text-decoration: none; display: inline-block; }
-.social-links a::after, .text-link::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -2px; left: 0; background-color: var(--link-hover); transition: width 0.3s ease; }
-.social-links a:hover::after, .text-link:hover::after { width: 100%; }
+.social-links a,
+.text-link {
+    position: relative;
+    text-decoration: none;
+    display: inline-block;
+}
 
-#link-cv-download { margin-top: 2rem; }
+.social-links a::after,
+.text-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--link-hover);
+    transition: width 0.3s ease;
+}
+
+.social-links a:hover::after,
+.text-link:hover::after {
+    width: 100%;
+}
+
+#link-cv-download {
+    margin-top: 2rem;
+}
+
+/* About Page Bio Content */
+#about-content {
+    line-height: 1.6;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+#about-content p {
+    margin-bottom: 0.85rem;
+}
+
+#about-content h2 {
+    font-size: 1.4rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+#about-content h3 {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+#about-content ul,
+#about-content ol {
+    margin: 0.5rem 0 1rem 0;
+    padding-left: 0;
+    list-style-position: outside;
+}
+
+#about-content li {
+    margin-bottom: 0.35rem;
+    padding-left: 0.25rem;
+    margin-left: 1.1rem;
+}
+
+/* Detail Pages (Single Project/Update) */
+.detail-page {
+    padding-top: var(--spacing-md);
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 2.5rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 500;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.back-link:hover {
+    color: var(--accent-color);
+    opacity: 1;
+    transform: translateX(-3px);
+}
+
+.detail-content {
+    max-width: 800px;
+}
+
+.detail-header {
+    margin-bottom: 1.5rem;
+}
+
+.detail-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+}
+
+.detail-header .status-badge {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+}
+
+.detail-header .update-meta {
+    display: flex;
+    gap: 0.8rem;
+    /* Balanced gap */
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.detail-header .update-meta .update-date {
+    min-width: auto;
+    /* Remove the 100px min-width from list page */
+    margin-top: -3px;
+    /* Precision vertical nudge */
+    font-family: var(--font-heading);
+    font-style: italic;
+    color: var(--text-light);
+}
+
+.detail-header .update-meta .update-type {
+    margin: 0;
+    line-height: 1;
+}
+
+/* Rich Content from Notion */
+.rich-content {
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.rich-content p {
+    margin-bottom: 1.5rem;
+}
+
+.rich-content h2 {
+    font-size: 1.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.rich-content h3 {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.rich-content h4 {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.rich-content ul,
+.rich-content ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.rich-content li {
+    margin-bottom: 0.5rem;
+}
+
+.rich-content blockquote {
+    border-left: 4px solid var(--accent-color);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-light);
+}
+
+.rich-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+.rich-content figure {
+    margin: 2rem 0;
+}
+
+.rich-content figure img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.rich-content figcaption {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.5rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.rich-content code {
+    background: var(--highlight-bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.rich-content a {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.rich-content a:hover {
+    color: var(--link-hover);
+}
+
+/* Update Image on Detail Page */
+.update-image {
+    margin: 2rem 0;
+}
+
+.update-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+/* Error Messages */
+.error-message {
+    padding: 2rem;
+    background: var(--highlight-bg);
+    border-radius: 8px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.error-message a {
+    color: var(--accent-color);
+    font-weight: 500;
+}
+
+/* Read More Link */
+.read-more-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent-color);
+}
+
+.read-more-link:hover {
+    text-decoration: underline;
+}
+
+/* ============================================
+   UPDATE IMAGE LAYOUTS
+   ============================================ */
+
+/* List Page - Right-aligned Thumbnails */
+.update-content-wrapper {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    flex: 1;
+}
+
+.update-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.update-thumbnail {
+    flex-shrink: 0;
+    width: 150px;
+    max-width: 150px;
+}
+
+.update-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    object-fit: cover;
+}
+
+@media (max-width: 600px) {
+    .update-content-wrapper {
+        flex-direction: column-reverse;
+    }
+
+    .update-thumbnail {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+/* Detail Page - Banner (Full Width at Top) */
+.update-banner {
+    margin: -1.5rem -2rem 3rem -2rem;
+    width: calc(100% + 4rem);
+    aspect-ratio: 21 / 9;
+    /* Cinematic cropping */
+    max-height: 450px;
+    overflow: hidden;
+    border-radius: 12px;
+    /* Elegant rounded corners */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    background: var(--bg-color);
+    /* Matches page background */
+}
+
+.update-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ensures cropping regardless of original image size */
+    display: block;
+    /* Removes white gap below image */
+}
+
+/* Detail Page - Cover Wrap (Newspaper Style) */
+.content-with-wrap {
+    overflow: hidden;
+}
+
+.cover-wrap {
+    float: right;
+    max-width: 280px;
+    width: 40%;
+    margin: 0 0 1.5rem 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 600px) {
+    .cover-wrap {
+        float: none;
+        max-width: 100%;
+        width: 100%;
+        margin: 0 0 1.5rem 0;
+    }
+}
+
+/* Detail Page - Gallery Grid */
+.update-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.update-gallery img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.update-gallery img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Footer Styling */
+footer {
+    padding: 3rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+}
+
+footer p {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    opacity: 0.7;
+    margin-bottom: 0;
+}
+
+/* Lightbox Styling */
+#lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+#lightbox.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lightbox-img {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-color);
+    /* Elegant Brown */
+    font-size: 1.8rem;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    z-index: 2010;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: rotate(90deg) scale(1.1);
+    color: var(--accent-color);
+}

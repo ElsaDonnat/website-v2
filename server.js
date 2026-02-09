@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const url = require('url');  // Add URL parsing
 
 const PORT = 8080;
 
@@ -25,7 +26,10 @@ const MIME_TYPES = {
 http.createServer(function (request, response) {
     console.log('request ', request.url);
 
-    let filePath = '.' + request.url;
+    // Parse URL to strip query parameters
+    const parsedUrl = url.parse(request.url);
+    let filePath = '.' + parsedUrl.pathname;  // Use pathname, not full URL
+
     if (filePath === './') {
         filePath = './index.html';
     }

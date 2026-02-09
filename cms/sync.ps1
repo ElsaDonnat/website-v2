@@ -1,5 +1,6 @@
 # Sync Script (PowerShell Version)
 # Run this with: ./sync.ps1
+# Note: This is the PowerShell alternative to sync.js. Use either one, not both.
 
 # 1. Load Environment Variables from .env
 $envPath = Join-Path $PSScriptRoot ".env"
@@ -33,18 +34,183 @@ $headers = @{
 
 Write-Host "🔄 Syncing data from Notion..." -ForegroundColor Cyan
 
-# 2. Fetch Projects
-function Get-NotionProjects {
-    $url = "https://api.notion.com/v1/databases/$DB_PROJECTS/query"
-    $body = @{
-        filter = @{
-            property = "Status"
-            select = @{
-                is_not_empty = $true
+# --- HELPER FUNCTIONS ---
+
+function Get-Text($prop) { 
+    if ($prop.rich_text -and $prop.rich_text.Count -gt 0) { 
+        return $prop.rich_text[0].plain_text 
+    } 
+    return "" 
+}
+
+function Get-Title($prop) { 
+    if ($prop.title -and $prop.title.Count -gt 0) { 
+        return $prop.title[0].plain_text 
+    } 
+    return "Untitled" 
+}
+
+function Get-Select($prop) { 
+    if ($prop.select) { 
+        return $prop.select.name 
+    } 
+    return "" 
+}
+
+function Get-MultiSelect($prop) { 
+    if ($prop.multi_select) { 
+        return $prop.multi_select | ForEach-Object { $_.name } 
+    } 
+    return @() 
+}
+
+function Get-Url($prop) { 
+    if ($prop.url) { 
+        return $prop.url 
+    } 
+    return "#" 
+}
+
+function Get-Date($prop) { 
+    if ($prop.date) { 
+        return $prop.date.start 
+    } 
+    return "" 
+}
+
+function Get-Image($prop) {
+    if ($prop.files -and $prop.files.Count -gt 0) {
+        $f = $prop.files[0]
+        if ($f.file) { return $f.file.url } 
+        elseif ($f.external) { return $f.external.url }
+    }
+    return $null
+}
+
+function Get-Docs($prop) {
+    $docs = @()
+    if ($prop.files) {
+        foreach ($f in $prop.files) {
+            $link = if ($f.file) { $f.file.url } else { $f.external.url }
+            $type = if ($f.name -match '\.pdf$') { 'pdf' } else { 'doc' }
+            $docs += @{ title = $f.name; type = $type; link = $link }
+        }
+    }
+    return $docs
+}
+
+# Convert rich text array to HTML
+function ConvertTo-HtmlFromRichText($richTextArray) {
+    if (-not $richTextArray -or $richTextArray.Count -eq 0) { return '' }
+    
+    $html = ''
+    foreach ($rt in $richTextArray) {
+        $text = $rt.plain_text
+        
+        if ($rt.annotations.bold) { $text = "<strong>$text</strong>" }
+        if ($rt.annotations.italic) { $text = "<em>$text</em>" }
+        if ($rt.annotations.strikethrough) { $text = "<s>$text</s>" }
+        if ($rt.annotations.underline) { $text = "<u>$text</u>" }
+        if ($rt.annotations.code) { $text = "<code>$text</code>" }
+        
+        if ($rt.href) {
+            $text = "<a href=`"$($rt.href)`" target=`"_blank`">$text</a>"
+        }
+        
+        $html += $text
+    }
+    return $html
+}
+
+# Convert Notion blocks to HTML
+function ConvertTo-HtmlFromBlocks($blocks) {
+    if (-not $blocks -or $blocks.Count -eq 0) { return '' }
+    
+    $html = ''
+    $inList = $false
+    $listType = ''
+    
+    foreach ($block in $blocks) {
+        # Close list if leaving list context
+        if ($inList -and $block.type -notin @('bulleted_list_item', 'numbered_list_item')) {
+            $html += if ($listType -eq 'bulleted') { '</ul>' } else { '</ol>' }
+            $inList = $false
+        }
+        
+        switch ($block.type) {
+            'paragraph' {
+                $pText = ConvertTo-HtmlFromRichText $block.paragraph.rich_text
+                if ($pText) { $html += "<p>$pText</p>" }
+            }
+            'heading_1' {
+                $html += "<h2>$(ConvertTo-HtmlFromRichText $block.heading_1.rich_text)</h2>"
+            }
+            'heading_2' {
+                $html += "<h3>$(ConvertTo-HtmlFromRichText $block.heading_2.rich_text)</h3>"
+            }
+            'heading_3' {
+                $html += "<h4>$(ConvertTo-HtmlFromRichText $block.heading_3.rich_text)</h4>"
+            }
+            'bulleted_list_item' {
+                if (-not $inList -or $listType -ne 'bulleted') {
+                    if ($inList) { $html += if ($listType -eq 'bulleted') { '</ul>' } else { '</ol>' } }
+                    $html += '<ul>'
+                    $inList = $true
+                    $listType = 'bulleted'
+                }
+                $html += "<li>$(ConvertTo-HtmlFromRichText $block.bulleted_list_item.rich_text)</li>"
+            }
+            'numbered_list_item' {
+                if (-not $inList -or $listType -ne 'numbered') {
+                    if ($inList) { $html += if ($listType -eq 'bulleted') { '</ul>' } else { '</ol>' } }
+                    $html += '<ol>'
+                    $inList = $true
+                    $listType = 'numbered'
+                }
+                $html += "<li>$(ConvertTo-HtmlFromRichText $block.numbered_list_item.rich_text)</li>"
+            }
+            'quote' {
+                $html += "<blockquote>$(ConvertTo-HtmlFromRichText $block.quote.rich_text)</blockquote>"
+            }
+            'divider' {
+                $html += '<hr>'
+            }
+            'image' {
+                $imgUrl = if ($block.image.file) { $block.image.file.url } elseif ($block.image.external) { $block.image.external.url } else { $null }
+                if ($imgUrl) {
+                    $caption = if ($block.image.caption -and $block.image.caption.Count -gt 0) { ConvertTo-HtmlFromRichText $block.image.caption } else { '' }
+                    $html += "<figure><img src=`"$imgUrl`" alt=`"$caption`"><figcaption>$caption</figcaption></figure>"
+                }
             }
         }
-    } | ConvertTo-Json -Depth 10
+    }
+    
+    # Close any open list
+    if ($inList) {
+        $html += if ($listType -eq 'bulleted') { '</ul>' } else { '</ol>' }
+    }
+    
+    return $html
+}
 
+# Fetch page content (blocks) from Notion
+function Get-PageContent($pageId) {
+    $url = "https://api.notion.com/v1/blocks/$pageId/children?page_size=100"
+    try {
+        $response = Invoke-RestMethod -Uri $url -Method Get -Headers $headers
+        return ConvertTo-HtmlFromBlocks $response.results
+    } catch {
+        Write-Host "⚠️ Error fetching content for page $pageId: $_" -ForegroundColor Yellow
+        return ''
+    }
+}
+
+# --- FETCH FUNCTIONS ---
+
+function Get-NotionProjects {
+    $url = "https://api.notion.com/v1/databases/$DB_PROJECTS/query"
+    $body = '{}' # Fetch all projects, no filter
+    
     try {
         $response = Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body
         return $response.results
@@ -54,7 +220,6 @@ function Get-NotionProjects {
     }
 }
 
-# 3. Fetch Updates
 function Get-NotionUpdates {
     $url = "https://api.notion.com/v1/databases/$DB_UPDATES/query"
     $body = @{
@@ -75,44 +240,27 @@ function Get-NotionUpdates {
     }
 }
 
-# Helper functions to extract data safely
-function Get-Text($prop) { if ($prop.rich_text.Count -gt 0) { return $prop.rich_text[0].plain_text } return "" }
-function Get-Title($prop) { if ($prop.title.Count -gt 0) { return $prop.title[0].plain_text } return "Untitled" }
-function Get-Select($prop) { if ($prop.select) { return $prop.select.name } return "" }
-function Get-MultiSelect($prop) { if ($prop.multi_select) { return $prop.multi_select | ForEach-Object { $_.name } } return @() }
-function Get-Url($prop) { if ($prop.url) { return $prop.url } return "#" }
-function Get-Date($prop) { if ($prop.date) { return $prop.date.start } return "" }
-function Get-Files($prop) {
-    if ($prop.files.Count -gt 0) {
-        $f = $prop.files[0]
-        if ($f.file) { return $f.file.url } else { return $f.external.url }
-    }
-    return $null
-}
-function Get-Docs($prop) {
-    $docs = @()
-    if ($prop.files) {
-        foreach ($f in $prop.files) {
-            $link = if ($f.file) { $f.file.url } else { $f.external.url }
-            $type = if ($f.name -match '\.pdf$') { 'pdf' } else { 'doc' }
-            $docs += @{ title = $f.name; type = $type; link = $link }
-        }
-    }
-    return $docs
-}
+# --- PROCESS DATA ---
 
-# Process Data
 $rawProjects = Get-NotionProjects
 $projects = @()
 foreach ($p in $rawProjects) {
     $props = $p.properties
+    $fullContent = Get-PageContent $p.id
+    
+    $summary = Get-Text $props.Summary
+    if (-not $summary) { $summary = Get-Text $props.Description }
+    
     $projects += @{
+        id = $p.id
         title = Get-Title $props.Name
         status = (Get-Select $props.Status).ToLower()
+        summary = $summary
         description = Get-Text $props.Description
-        tags = Get-MultiSelect $props.Tags
+        fullContent = $fullContent
+        tags = @(Get-MultiSelect $props.Tags)
         link = Get-Url $props.Link
-        documents = Get-Docs $props.Documents
+        documents = @(Get-Docs $props.Documents)
     }
 }
 
@@ -120,19 +268,26 @@ $rawUpdates = Get-NotionUpdates
 $updates = @()
 foreach ($u in $rawUpdates) {
     $props = $u.properties
+    $fullContent = Get-PageContent $u.id
+    
+    $summary = Get-Text $props.Summary
+    if (-not $summary) { $summary = Get-Text $props.Content }
+    
     $updates += @{
+        id = $u.id
         date = Get-Date $props.Date
         title = Get-Title $props.Name
         type = (Get-Select $props.Type).ToLower()
+        summary = $summary
         content = Get-Text $props.Content
-        image = Get-Files $props.Image
+        fullContent = $fullContent
+        image = Get-Image $props.Image
     }
 }
 
 Write-Host "✅ Found $($projects.Count) projects and $($updates.Count) updates." -ForegroundColor Green
 
-# 4. Construct data.js Content
-# We hardcode the static bio/links here for simplicity
+# --- STATIC DATA ---
 $staticData = @{
     name = "Elsa Donnat"
     role = "AI Policy Researcher | Governance & Legal Frameworks"
@@ -151,17 +306,18 @@ $staticData = @{
     }
 }
 
-$jsonProjects = $projects | ConvertTo-Json -Depth 10
-$jsonUpdates = $updates | ConvertTo-Json -Depth 10
+# --- GENERATE OUTPUT ---
+
+$jsonProjects = $projects | ConvertTo-Json -Depth 10 -Compress:$false
+$jsonUpdates = $updates | ConvertTo-Json -Depth 10 -Compress:$false
 $jsonLinks = $staticData.links | ConvertTo-Json -Depth 10
 $jsonBioShort = $staticData.bio.short | ConvertTo-Json
-# Bio long needs special handling for backticks if we use template literals, but simpler to just use string
 $bioLong = $staticData.bio.long
 
 $fileContent = @"
 /*
  * WEBSITE CONTENT CONFIGURATION
- * Synced from Notion: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+ * Synced from Notion: $(Get-Date -Format "yyyy-MM-ddTHH:mm:ss")
  */
 
 const data = {
@@ -177,7 +333,7 @@ const data = {
     bio: {
         image: "$($staticData.bio.image)",
         short: $jsonBioShort,
-        long: `$bioLong`
+        long: ``$bioLong``
     },
 
     // --- PROJECTS ---
@@ -188,7 +344,7 @@ const data = {
 };
 "@
 
-# 5. Write to File
+# Write to File
 $outputPath = Join-Path $PSScriptRoot "../data.js"
 Set-Content -Path $outputPath -Value $fileContent -Encoding UTF8
 

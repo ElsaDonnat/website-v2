@@ -12,8 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (path.includes('about.html')) {
             renderAboutPage();
+        } else if (path.includes('project.html') && !path.includes('projects.html')) {
+            // Single project detail page
+            renderProjectDetailPage();
         } else if (path.includes('projects.html')) {
             renderProjectsPage();
+        } else if (path.includes('update.html') && !path.includes('updates.html')) {
+            // Single update detail page
+            renderUpdateDetailPage();
         } else if (path.includes('updates.html')) {
             renderUpdatesPage();
         } else if (path.includes('contact.html')) {
@@ -74,9 +80,10 @@ function renderHighlights() {
         selectedProjects.forEach(project => {
             const projectDiv = document.createElement('div');
             projectDiv.className = 'project-card-mini';
+            const tagDisplay = project.tags && project.tags.length > 0 ? project.tags[0] : '';
             projectDiv.innerHTML = `
-                <div class="meta" style="color: var(--accent-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">${project.tags[0]}</div>
-                <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;"><a href="projects.html" style="color: var(--text-color);">${project.title}</a></h3>
+                <div class="meta" style="color: var(--accent-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">${tagDisplay}</div>
+                <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;"><a href="project.html?id=${project.id}" style="color: var(--text-color);">${project.title}</a></h3>
             `;
             currentProjectContainer.appendChild(projectDiv);
         });
@@ -102,7 +109,7 @@ function renderHighlights() {
 
             article.innerHTML = `
                 <div class="meta" style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;">${item.date} • ${item.type}</div>
-                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;"><a href="updates.html">${item.title}</a> ${badgeHtml}</h4>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;"><a href="update.html?id=${item.id}">${item.title}</a> ${badgeHtml}</h4>
             `;
             highlightsContainer.appendChild(article);
         });
@@ -139,34 +146,30 @@ function renderProjectsPage() {
         filtered.forEach(p => {
             const card = document.createElement('div');
             card.className = 'project-card';
+            card.style.cursor = 'pointer';
 
-            const tagsHtml = p.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            const tagsHtml = p.tags ? p.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
 
-            // Render Documents if available
-            let docsHtml = '';
-            if (p.documents && p.documents.length > 0) {
-                docsHtml = `<div class="project-docs" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color);">
-                    <strong style="font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Documents:</strong>
-                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                        ${p.documents.map(doc => `
-                            <a href="${doc.link}" class="doc-link" target="_blank" style="font-size: 0.8rem; padding: 0.3rem 0.6rem; background: #f4f6f8; border-radius: 4px; color: var(--text-color); text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
-                                ${doc.type === 'pdf' ? '📄' : '📝'} ${doc.title}
-                            </a>
-                        `).join('')}
-                    </div>
-                </div>`;
-            }
+            // Use summary for card display, fallback to description
+            const displayText = p.summary || p.description || '';
 
             card.innerHTML = `
                 <div class="project-header">
                     <h3>${p.title}</h3>
                     <span class="status-badge ${p.status}">${p.status}</span>
                 </div>
-                <p>${p.description}</p>
+                <p>${displayText}</p>
                 <div class="tags">${tagsHtml}</div>
-                ${docsHtml}
-                <a href="${p.link}" class="project-link" style="display: inline-block; margin-top: 1rem;">View Details &rarr;</a>
+                <a href="project.html?id=${p.id}" class="project-link" style="display: inline-block; margin-top: 1rem;">View Details &rarr;</a>
             `;
+
+            // Make the whole card clickable
+            card.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'A') {
+                    window.location.href = `project.html?id=${p.id}`;
+                }
+            });
+
             container.appendChild(card);
         });
     }
@@ -187,29 +190,219 @@ function renderProjectsPage() {
     });
 }
 
+function renderProjectDetailPage() {
+    const container = document.getElementById('project-detail');
+    if (!container) return;
+
+    // Get ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get('id');
+
+    if (!projectId) {
+        container.innerHTML = '<p class="error-message">No project specified. <a href="projects.html">View all projects</a></p>';
+        return;
+    }
+
+    // Find the project
+    const project = data.projects.find(p => p.id === projectId);
+
+    if (!project) {
+        container.innerHTML = '<p class="error-message">Project not found. <a href="projects.html">View all projects</a></p>';
+        return;
+    }
+
+    // Update page title
+    document.title = `${project.title} | Elsa Donnat`;
+
+    // Build tags HTML
+    const tagsHtml = project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
+
+    // Build documents HTML
+    let docsHtml = '';
+    if (project.documents && project.documents.length > 0) {
+        docsHtml = `
+            <div class="project-docs" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color);">
+                <strong style="font-size: 0.9rem; display: block; margin-bottom: 0.75rem;">Documents:</strong>
+                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                    ${project.documents.map(doc => `
+                        <a href="${doc.link}" class="doc-link" target="_blank" style="font-size: 0.85rem; padding: 0.5rem 1rem; background: #f4f6f8; border-radius: 4px; color: var(--text-color); text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
+                            ${doc.type === 'pdf' ? '📄' : '📝'} ${doc.title}
+                        </a>
+                    `).join('')}
+                </div>
+            </div>`;
+    }
+
+    // Determine content to display
+    const contentHtml = project.fullContent || `<p>${project.description || 'No detailed description available.'}</p>`;
+
+    container.innerHTML = `
+        <div class="detail-header">
+            <h1>${project.title}</h1>
+            <span class="status-badge ${project.status}">${project.status}</span>
+        </div>
+        <div class="tags" style="margin-bottom: 1.5rem;">${tagsHtml}</div>
+        <div class="rich-content">
+            ${contentHtml}
+        </div>
+        ${docsHtml}
+        ${project.link && project.link !== '#' ? `<a href="${project.link}" class="btn btn-outline" target="_blank" style="margin-top: 2rem; display: inline-block;">Visit Project Link &rarr;</a>` : ''}
+    `;
+}
+
 function renderUpdatesPage() {
     const container = document.getElementById('updates-list');
 
     data.updates.forEach(u => {
         const item = document.createElement('div');
         item.className = 'update-item';
+        item.style.cursor = 'pointer';
 
-        // Render Image if available
+        // Use summary for list display, fallback to content
+        const displayText = u.summary || u.content || '';
+
+        // Image HTML (right-aligned) - uses listImage with fallback
         let imageHtml = '';
-        if (u.image) {
-            imageHtml = `<img src="${u.image}" alt="${u.title}" style="width: 100%; max-width: 600px; height: auto; border-radius: 4px; margin-top: 1rem; border: 1px solid var(--border-color);">`;
+        if (u.listImage) {
+            imageHtml = `
+                <div class="update-thumbnail">
+                    <img src="${u.listImage}" alt="${u.title}">
+                </div>
+            `;
         }
 
         item.innerHTML = `
             <div class="update-date">${u.date}</div>
-            <div class="update-content">
-                <span class="update-type">${u.type}</span>
-                <h3>${u.title} ${isNew(u.date) ? '<span class="new-badge" title="New Update"></span>' : ''}</h3>
-                <p>${u.content}</p>
+            <div class="update-content-wrapper">
+                <div class="update-text">
+                    <span class="update-type">${u.type}</span>
+                    <h3><a href="update.html?id=${u.id}">${u.title}</a> ${isNew(u.date) ? '<span class="new-badge" title="New Update"></span>' : ''}</h3>
+                    <p>${displayText}</p>
+                    <a href="update.html?id=${u.id}" class="read-more-link">Read more &rarr;</a>
+                </div>
                 ${imageHtml}
             </div>
         `;
+
+        // Make the whole item clickable
+        item.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'A') {
+                window.location.href = `update.html?id=${u.id}`;
+            }
+        });
+
         container.appendChild(item);
+    });
+}
+
+function renderUpdateDetailPage() {
+    const container = document.getElementById('update-detail');
+    if (!container) return;
+
+    // Get ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const updateId = urlParams.get('id');
+
+    if (!updateId) {
+        container.innerHTML = '<p class="error-message">No update specified. <a href="updates.html">View all updates</a></p>';
+        return;
+    }
+
+    // Find the update
+    const update = data.updates.find(u => u.id === updateId);
+
+    if (!update) {
+        container.innerHTML = '<p class="error-message">Update not found. <a href="updates.html">View all updates</a></p>';
+        return;
+    }
+
+    // Update page title
+    document.title = `${update.title} | Elsa Donnat`;
+
+    // Build Banner HTML (full-width at top)
+    let bannerHtml = '';
+    if (update.banner) {
+        bannerHtml = `<div class="update-banner"><img src="${update.banner}" alt="${update.title}"></div>`;
+    }
+
+    // Build Cover HTML (for newspaper-style wrap)
+    let coverHtml = '';
+    if (update.cover) {
+        coverHtml = `<img src="${update.cover}" alt="${update.title}" class="cover-wrap">`;
+    }
+
+    // Build Gallery HTML (grid at bottom)
+    let galleryHtml = '';
+    if (update.gallery && update.gallery.length > 0) {
+        const galleryItems = update.gallery.map(img => `<img src="${img}" alt="Gallery image">`).join('');
+        galleryHtml = `<div class="update-gallery">${galleryItems}</div>`;
+    }
+
+    // Determine content to display
+    const contentHtml = update.fullContent || `<p>${update.content || 'No detailed content available.'}</p>`;
+
+    container.innerHTML = `
+        ${bannerHtml}
+        <div class="detail-header">
+            <div class="update-meta">
+                <span class="update-date">${update.date}</span>
+                <span class="update-type">${update.type}</span>
+            </div>
+            <h1>${update.title}</h1>
+        </div>
+        <div class="rich-content content-with-wrap">
+            ${coverHtml}
+            ${contentHtml}
+        </div>
+        ${galleryHtml}
+    `;
+
+    // Initialize lightbox for gallery images
+    initLightbox();
+}
+
+function initLightbox() {
+    const gallery = document.querySelector('.update-gallery');
+    if (!gallery) return;
+
+    const images = gallery.querySelectorAll('img');
+
+    // Create lightbox element if it doesn't exist
+    let lightbox = document.getElementById('lightbox');
+    if (!lightbox) {
+        lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.innerHTML = `
+            <div class="lightbox-content">
+                <img id="lightbox-img" src="" alt="Enlarged image">
+                <button class="lightbox-close" aria-label="Close lightbox">&times;</button>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        // Close on click outside or close button
+        lightbox.addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox' || e.target.classList.contains('lightbox-close')) {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        // Close on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+            }
+        });
+    }
+
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    images.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+        });
     });
 }
 
