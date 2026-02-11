@@ -290,6 +290,12 @@ nav {
     font-size: 0.85rem;
 }
 
+/* Home page "More About Me" button - 25% smaller */
+.btn-home-about {
+    transform: scale(0.75);
+    transform-origin: left center;
+}
+
 .text-link {
     background: none;
     border: none;

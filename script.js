@@ -56,9 +56,11 @@ function renderHomePage() {
     }
 
     // Links
-    document.getElementById('link-cv').href = data.links.cv;
+    const linkCv = document.getElementById('link-cv');
+    if (linkCv) linkCv.href = data.links.cv;
     document.getElementById('link-linkedin').href = data.links.linkedin;
-    document.getElementById('link-github').href = data.links.github;
+    const linkGithub = document.getElementById('link-github');
+    if (linkGithub) linkGithub.href = data.links.github;
     document.getElementById('link-substack').href = data.links.substack;
     document.getElementById('link-feedback').href = data.links.feedback;
 
