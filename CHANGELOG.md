@@ -2,6 +2,30 @@
 
 All notable changes to this website are documented in this file.
 
+## [2026-02-12] - Project Dates, Layout Overhaul & Home Page Highlights
+
+### Added
+- **Project dates** - Dates synced from Notion (`Date` property with start/end), displayed as "Month Year" or date ranges
+- **Project pinning** - New `Pinned` checkbox property from Notion controls which projects appear on the home page
+- **Ideas category** - New project status with filter button and amber "IDEA" badge
+- **Home page "new" indicator** - Pulsing red dot next to update titles less than 7 days old
+- **Update URL support** - `URL` property synced from Notion, displayed as "Visit Link" button on update detail pages
+- **Bold accent styling** - Bold text in rich content (projects & updates) renders in the site's accent color
+
+### Changed
+- **Projects grid** - Switched from 2 to 3 columns with smaller fonts and tighter padding
+- **Home page highlights** - Now shows 5 most recent updates (was 3) and 3 pinned projects (was 2 ongoing)
+- **Project cards** - Status badge and date now displayed on the same line below the title
+- **Project detail page** - Uses Notion page body content (`fullContent`) instead of Description property
+- **Home page mini-cards** - Reduced padding and font size for a more compact look
+- **Projects subtitle** - Updated wording to encourage reaching out for collaboration
+- **Update thumbnails** - Realigned to match title position on the updates list page
+
+### Fixed
+- **Date alignment** - Fine-tuned vertical alignment of dates with status badges using baseline positioning
+
+---
+
 ## [2026-02-09] - Notion CMS Extension & Image Layout System
 
 ### Added

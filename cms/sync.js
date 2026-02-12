@@ -18,6 +18,11 @@ const getSelect = (prop) => prop && prop.select ? prop.select.name : "";
 const getMultiSelect = (prop) => prop && prop.multi_select ? prop.multi_select.map(item => item.name) : [];
 const getUrl = (prop) => prop && prop.url ? prop.url : "#";
 const getDate = (prop) => prop && prop.date ? prop.date.start : "";
+const getDateRange = (prop) => {
+    if (!prop || !prop.date) return { start: null, end: null };
+    return { start: prop.date.start || null, end: prop.date.end || null };
+};
+const getCheckbox = (prop) => prop && prop.checkbox === true;
 
 // Helper for Files
 const getFiles = (prop) => {
@@ -248,9 +253,11 @@ async function getProjects() {
             id: page.id,
             title: getTitle(props.Name),
             status: getSelect(props.Status).toLowerCase() || 'ongoing',
-            summary: getText(props.Summary) || getText(props.Description), // Use Summary if available, fallback to Description
-            description: getText(props.Description), // Keep for backwards compatibility
-            fullContent: fullContent, // Rich HTML from page body
+            date: getDateRange(props.Date),
+            pinned: getCheckbox(props.Pinned),
+            summary: getText(props.Summary) || getText(props.Description),
+            description: getText(props.Description),
+            fullContent: fullContent,
             tags: getMultiSelect(props.Tags),
             link: getUrl(props.Link),
             documents: documents
@@ -295,6 +302,7 @@ async function getUpdates() {
             summary: getText(props.Summary) || getText(props.Content),
             content: getText(props.Content),
             fullContent: fullContent,
+            link: getUrl(props.URL),
             // Image properties (now local paths)
             listImage: listImage,   // The image to show on list page (right side)
             cover: cover,           // For wrap style on detail page

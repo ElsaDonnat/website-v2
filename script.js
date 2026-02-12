@@ -8,21 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCommonElements();
 
         // Page-specific rendering
+        // Support both clean URLs (/about) and regular URLs (/about.html)
         const path = window.location.pathname;
 
-        if (path.includes('about.html')) {
+        if (path.match(/\/about(\.html)?$/)) {
             renderAboutPage();
-        } else if (path.includes('project.html') && !path.includes('projects.html')) {
+        } else if (path.match(/\/project(\.html)?$/) && !path.match(/\/projects(\.html)?$/)) {
             // Single project detail page
             renderProjectDetailPage();
-        } else if (path.includes('projects.html')) {
+        } else if (path.match(/\/projects(\.html)?$/)) {
             renderProjectsPage();
-        } else if (path.includes('update.html') && !path.includes('updates.html')) {
+        } else if (path.match(/\/update(\.html)?$/) && !path.match(/\/updates(\.html)?$/)) {
             // Single update detail page
             renderUpdateDetailPage();
-        } else if (path.includes('updates.html')) {
+        } else if (path.match(/\/updates(\.html)?$/)) {
             renderUpdatesPage();
-        } else if (path.includes('contact.html')) {
+        } else if (path.match(/\/contact(\.html)?$/)) {
             renderContactPage();
         } else {
             // Default to Home Page (handles /, /index.html, /website-v2/, etc.)
@@ -74,8 +75,11 @@ function renderHighlights() {
 
     if (!currentProjectContainer || !highlightsContainer) return;
 
-    // 1. Render Selected Projects (Top 2 Ongoing)
-    const selectedProjects = data.projects ? data.projects.filter(p => p.status === 'ongoing').slice(0, 2) : [];
+    // 1. Render Selected Projects (Top 3 Pinned, fallback to Ongoing)
+    let selectedProjects = data.projects ? data.projects.filter(p => p.pinned).slice(0, 3) : [];
+    if (selectedProjects.length === 0) {
+        selectedProjects = data.projects ? data.projects.filter(p => p.status === 'ongoing').slice(0, 3) : [];
+    }
 
     if (selectedProjects.length > 0) {
         currentProjectContainer.innerHTML = '';
@@ -84,8 +88,8 @@ function renderHighlights() {
             projectDiv.className = 'project-card-mini';
             const tagDisplay = project.tags && project.tags.length > 0 ? project.tags[0] : '';
             projectDiv.innerHTML = `
-                <div class="meta" style="color: var(--accent-color); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">${tagDisplay}</div>
-                <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;"><a href="project.html?id=${project.id}" style="color: var(--text-color);">${project.title}</a></h3>
+                <div class="meta" style="color: var(--accent-color); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.3rem;">${tagDisplay}</div>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.3rem;"><a href="project.html?id=${project.id}" style="color: var(--text-color);">${project.title}</a></h3>
             `;
             currentProjectContainer.appendChild(projectDiv);
         });
@@ -93,8 +97,8 @@ function renderHighlights() {
         currentProjectContainer.innerHTML = '<p>No selected projects.</p>';
     }
 
-    // 2. Render Recent Updates (Highlights)
-    const recentUpdates = data.updates ? data.updates.slice(0, 3) : [];
+    // 2. Render Recent Updates (5 most recent)
+    const recentUpdates = data.updates ? data.updates.slice(0, 5) : [];
 
     if (recentUpdates.length > 0) {
         highlightsContainer.innerHTML = '';
@@ -110,8 +114,8 @@ function renderHighlights() {
             const badgeHtml = isNewItem ? '<span class="new-badge" title="New Update"></span>' : '';
 
             article.innerHTML = `
-                <div class="meta" style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;">${item.date} • ${item.type}</div>
-                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;"><a href="update.html?id=${item.id}">${item.title}</a> ${badgeHtml}</h4>
+                <div class="meta" style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;">${formatDate(item.date)} • ${item.type}</div>
+                <h4 style="font-size: 1.1rem; margin-bottom: 0.5rem;">${isNewItem ? '<span class="home-new-dot"></span>' : ''}<a href="update.html?id=${item.id}">${item.title}</a></h4>
             `;
             highlightsContainer.appendChild(article);
         });
@@ -155,10 +159,14 @@ function renderProjectsPage() {
             // Use summary for card display, fallback to description
             const displayText = p.summary || p.description || '';
 
+            // Format project date
+            const dateHtml = p.date ? formatProjectDate(p.date) : '';
+
             card.innerHTML = `
-                <div class="project-header">
-                    <h3>${p.title}</h3>
-                    <span class="status-badge ${p.status}">${p.status}</span>
+                <h3>${p.title}</h3>
+                <div class="project-meta">
+                    <span class="status-badge ${p.status}">${statusLabel(p.status)}</span>
+                    ${dateHtml ? `<span class="project-date">${dateHtml}</span>` : ''}
                 </div>
                 <p>${displayText}</p>
                 <div class="tags">${tagsHtml}</div>
@@ -219,6 +227,9 @@ function renderProjectDetailPage() {
     // Build tags HTML
     const tagsHtml = project.tags ? project.tags.map(tag => `<span class="tag">${tag}</span>`).join('') : '';
 
+    // Format project date
+    const dateHtml = project.date ? formatProjectDate(project.date) : '';
+
     // Build documents HTML
     let docsHtml = '';
     if (project.documents && project.documents.length > 0) {
@@ -236,19 +247,22 @@ function renderProjectDetailPage() {
     }
 
     // Determine content to display
-    const contentHtml = project.fullContent || `<p>${project.description || 'No detailed description available.'}</p>`;
+    const contentHtml = project.fullContent || `<p>No detailed description available.</p>`;
 
     container.innerHTML = `
         <div class="detail-header">
             <h1>${project.title}</h1>
-            <span class="status-badge ${project.status}">${project.status}</span>
+            <div class="project-meta">
+                <span class="status-badge ${project.status}">${statusLabel(project.status)}</span>
+                ${dateHtml ? `<span class="project-date">${dateHtml}</span>` : ''}
+            </div>
         </div>
         <div class="tags" style="margin-bottom: 1.5rem;">${tagsHtml}</div>
         <div class="rich-content">
             ${contentHtml}
         </div>
         ${docsHtml}
-        ${project.link && project.link !== '#' ? `<a href="${project.link}" class="btn btn-outline" target="_blank" style="margin-top: 2rem; display: inline-block;">Visit Project Link &rarr;</a>` : ''}
+        ${project.link && project.link !== '#' ? `<a href="${project.link}" class="btn btn-outline" target="_blank" style="margin-top: 2rem; margin-left: 0; display: inline-block;">Visit Project Link &rarr;</a>` : ''}
     `;
 }
 
@@ -274,7 +288,7 @@ function renderUpdatesPage() {
         }
 
         item.innerHTML = `
-            <div class="update-date">${u.date}</div>
+            <div class="update-date">${formatDate(u.date)}</div>
             <div class="update-content-wrapper">
                 <div class="update-text">
                     <span class="update-type">${u.type}</span>
@@ -347,7 +361,7 @@ function renderUpdateDetailPage() {
         ${bannerHtml}
         <div class="detail-header">
             <div class="update-meta">
-                <span class="update-date">${update.date}</span>
+                <span class="update-date">${formatDate(update.date)}</span>
                 <span class="update-type">${update.type}</span>
             </div>
             <h1>${update.title}</h1>
@@ -356,6 +370,7 @@ function renderUpdateDetailPage() {
             ${coverHtml}
             ${contentHtml}
         </div>
+        ${update.link && update.link !== '#' ? `<a href="${update.link}" class="btn btn-outline" target="_blank" style="margin-top: 2rem; margin-left: 0; display: inline-block;">Visit Link &rarr;</a>` : ''}
         ${galleryHtml}
     `;
 
@@ -433,6 +448,46 @@ function renderContactPage() {
 
 // --- UTILS ---
 
+// Format a project date object { start, end } as "Month Year" or "Month Year – Month Year"
+function formatProjectDate(dateObj) {
+    if (!dateObj || !dateObj.start) return '';
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+
+    function toMonthYear(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        return `${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    const startFormatted = toMonthYear(dateObj.start);
+
+    if (dateObj.end) {
+        const endFormatted = toMonthYear(dateObj.end);
+        // Only show range if different
+        if (endFormatted !== startFormatted) {
+            return `${startFormatted} – ${endFormatted}`;
+        }
+    }
+
+    return startFormatted;
+}
+
+// Map status value to display label
+function statusLabel(status) {
+    const labels = { 'ideas': 'IDEA' };
+    return labels[status] || status;
+}
+
+function formatDate(dateString) {
+    if (!dateString) return '';
+    const parts = dateString.split('-');
+    if (parts.length === 3) {
+        return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateString;
+}
+
 function copyEmail() {
     const email = data.email;
     navigator.clipboard.writeText(email).then(() => {
@@ -462,9 +517,7 @@ function isNew(dateString) {
     if (!dateString) return false;
     const updateDate = new Date(dateString);
     const now = new Date();
-    // Reset times to compare just dates if desired, or keep precise.
-    // Let's keep it simple: difference in milliseconds
     const diffTime = now - updateDate;
     const diffDays = diffTime / (1000 * 60 * 60 * 24);
-    return diffDays >= 0 && diffDays <= 3;
+    return diffDays >= 0 && diffDays <= 7;
 }
